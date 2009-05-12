@@ -181,7 +181,7 @@ void nMDS::Initialize()
         vector <double> temp;
         for(unsigned long int j=0;j<embed_dim;j++)
         {
-                temp.push_back(((1.0*random())/RAND_MAX)-0.5);
+                temp.push_back(((1.0*rand())/RAND_MAX)-0.5);
         }
         Positions.push_back(temp);
     }
