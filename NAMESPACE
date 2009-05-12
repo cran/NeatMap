@@ -1,0 +1,4 @@
+useDynLib("NeatMap")
+
+export(circularmap,draw.dendrogram,draw.dendrogram3d,heatmap1,lineplot,make.circularmap,make.heatmap1,make.profileplot3d,nMDS,profileplot3d)
+#exportPattern("^[[:alpha:]]+")
