@@ -1,17 +1,18 @@
-make.circularmap<-function(profiles,method="nMDS",column.method="none",cluster.method="average.linkage",metric="pearson",column.metric="pearson",Rin=10,Rout=30,thickness=3,label.names=NULL,Rlabel=32,label.size=1.5,normalize.profiles=T)
+make.circularmap<-function(profiles,method="nMDS",column.method="none",cluster.method="average.linkage",metric="pearson",column.metric="pearson",Rin=10,Rout=30,thickness=3,label.names=NULL,Rlabel=32,label.size=1.5,normalize.profiles=T, row.random.seed=NULL,column.random.seed=NULL)
 {
         
   METHODS=c("nMDS","PCA");
   meth<-pmatch(method,METHODS);
   if(is.na(meth)) stop("Invalid Method");
   if(meth == -1) stop("Ambiguous Method");
-  positions<-data.reduction(profiles,method,metric)$x[,1:2];
+  positions<-data.reduction(profiles,method,metric,random.seed=row.random.seed)$x[,1:2];
   
   METHODS1=c("none","nMDS","PCA","average.linkage","complete.linkage");
   cmeth<-pmatch(column.method,METHODS1);
   if(is.na(cmeth)) stop("Invalid Column Method");
   if(cmeth == -1) stop("Ambiguous Column Method");  
-  if(cmeth ==1) column.order<-1:dim(profiles)[2] else column.order<-find.order(data.reduction(t(profiles),method=column.method,metric=column.metric));
+  if(cmeth ==1) column.order<-1:dim(profiles)[2] else
+  column.order<-find.order(data.reduction(t(profiles),method=column.method,metric=column.metric,random.seed=column.random.seed));
 
   
   CMETHODS=c("none","average.linkage","complete.linkage");
@@ -23,6 +24,15 @@ make.circularmap<-function(profiles,method="nMDS",column.method="none",cluster.m
   circularmap(positions,profiles,row.cluster,column.order=column.order,Rin=Rin,Rout=Rout,thickness=thickness,label.names=label.names,Rlabel=Rlabel,label.size=label.size,normalize.profiles=normalize.profiles);
 }
 
+normalize<-function(data)
+{
+        norm<-matrix(nrow=dim(data)[1],ncol=dim(data)[2]);
+        for(i in 1:(dim(norm)[1]))
+        {
+                norm[i,]<-(data[i,]-mean(data[i,],na.rm=T))/sd(data[i,],na.rm=T);
+        }
+        return(norm);
+}
 
 circularmap<-function(pos,profiles,column.order=NULL,cluster.result=NULL,cluster.heights=NULL,Rin=10,Rout=30,thickness=3,label.names=NULL,Rlabel=32,label.size=1.5,normalize.profiles=T)
 {
@@ -55,44 +65,66 @@ circularmap<-function(pos,profiles,column.order=NULL,cluster.result=NULL,cluster
           stop("column.order not a permutation of 1:(number_of_columns)");
         }
     }
-    
-    x<-matrix(nrow=(profiles.length+1)*n.points,ncol=1)
-    y<-matrix(nrow=(profiles.length+1)*n.points,ncol=1)
-    color<-matrix(nrow=(profiles.length+1)*n.points,ncol=1)
-    group<-matrix(nrow=(profiles.length+1)*n.points,ncol=1)
+    x<-c();
+    y<-c();
+    color<-c();
+    group<-c();
     labelx<-matrix(nrow=n.points,ncol=1);
     labely<-matrix(nrow=n.points,ncol=1);
     labelname<-matrix(nrow=n.points,ncol=1);
     labelangle<-matrix(nrow=n.points,ncol=1);
-    for(i in 1:length(theta))
+    i=0;
+    origin<-data.frame(x=0,y=0);
+    myplot<-qplot(x,y,data=origin);
+    if(normalize.profiles)
     {
-        xstart<-Rin*cos(theta[i]);
-        xstop<-Rout*cos(theta[i]);
-        ystart<-Rin*sin(theta[i]);
-        ystop<-Rout*sin(theta[i]);
-        xvals<-seq(xstart,xstop,(xstop-xstart)/(profiles.length))
-        yvals<-seq(ystart,ystop,(ystop-ystart)/(profiles.length))
-        if(normalize.profiles)
+        profiles1<-normalize(profiles);
+    }
+    else
+    {
+        profiles1<-profiles;
+    }
+ for(j in 0:((length(theta)-0.5)%/%1000))
+    {
+        x0<-c();
+        y0<-c();
+        color0<-c();
+        group0<-c();
+        if(j<(length(theta)%/%1000))
         {
-                colorvals<-c((profiles[i,column.order]-mean(profiles[i,],na.rm=T))/sd(profiles[i,],na.rm=T),0);
+                lim=1000;
         }
         else
         {
-                colorvals<-c(profiles[i,column.order],0);
+                lim=length(theta)%%1000;
         }
-        x[((i-1)*(profiles.length+1)+1):(i*(profiles.length+1)),1]<-xvals;
-        y[((i-1)*(profiles.length+1)+1):(i*(profiles.length+1)),1]<-yvals;
-        color[((i-1)*(profiles.length+1)+1):(i*(profiles.length+1)),1]<-colorvals;
-        group[((i-1)*(profiles.length+1)+1):(i*(profiles.length+1)),1]<-i;
-        labelx[i]<-Rlabel*cos(theta[i]);
-        labely[i]<-Rlabel*sin(theta[i]);
-        labelangle[i]<-180*theta[i]/pi;
+        for(k in 1:lim)
+        {
+              i<-i+1;
+              xstart<-Rin*cos(theta[i]);
+              xstop<-Rout*cos(theta[i]);
+              ystart<-Rin*sin(theta[i]);
+              ystop<-Rout*sin(theta[i]);
+              xvals<-seq(xstart,xstop,(xstop-xstart)/(profiles.length))
+              yvals<-seq(ystart,ystop,(ystop-ystart)/(profiles.length))
+              colorvals<-c(profiles1[i,column.order],0);
+              x0<-c(x0,xvals); 
+              y0<-c(y0,yvals); 
+              color0<-c(color0,colorvals); 
+              group0<-c(group0,rep(i,profiles.length+1)); 
+              labelx[i]<-Rlabel*cos(theta[i]);
+              labely[i]<-Rlabel*sin(theta[i]);
+              labelangle[i]<-180*theta[i]/pi;
+        }
+        x<-c(x,x0);
+        y<-c(y,y0);
+        color<-c(color,color0);
+        group<-c(group,group0);
+        data<-data.frame(x=x0,y=y0,color=color0,group=group0,row.names=1:length(group0))
+        myplot<-myplot+geom_path(data=data,aes(x=x,y=y,color=color,group=group),size=thickness)+scale_colour_gradient2(low="green",high="red",mid="black",midpoint=mean(profiles1,na.rm=T),alpha=0.7);
     }
-    data<-data.frame(x=x,y=y,color=color,group=group)
-   
     
     origin<-data.frame(x=0,y=0);
-    myplot<-qplot(x,y,data=origin);
   
 
     if(!is.null(label.names))
@@ -100,12 +132,7 @@ circularmap<-function(pos,profiles,column.order=NULL,cluster.result=NULL,cluster
       label.names<-as.vector(label.names);
       if(length(label.names)!=n.points) stop("The number of labels is not equal to the number of rows");
       labels<-data.frame(x=labelx,y=labely,angle=labelangle,label=label.names);
-    myplot<-myplot+geom_path(aes(group=group,color=color),data=data,size=thickness)+geom_text(data=labels,aes(x=x,y=y,angle=angle,label=label),size=label.size,hjust=0)+scale_colour_gradient2(low="green",high="red",mid="black",midpoint=mean(data$color,na.rm=T),alpha=0.7);
-    }
-    else
-    {
-
-     myplot<-myplot+geom_path(aes(group=group,color=color),data=data,size=thickness)+scale_colour_gradient2(low="green",high="red",mid="black",midpoint=mean(data$color,na.rm=T),alpha=0.7);
+      myplot<-myplot+geom_text(data=labels,aes(x=x,y=y,angle=angle,label=label),size=label.size,hjust=0);
     }
     
     if(!is.null(cluster.result))

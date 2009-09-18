@@ -1,4 +1,4 @@
-data.reduction<-function(profiles,method="nMDS",metric="pearson")
+data.reduction<-function(profiles,method="nMDS",metric="pearson",random.seed=NULL)
 {
   METHODS=c("nMDS","PCA","average.linkage","complete.linkage");
   meth<-pmatch(method,METHODS);
@@ -8,7 +8,7 @@ data.reduction<-function(profiles,method="nMDS",metric="pearson")
   metr<-pmatch(metric,METRICS);
   if(is.na(metr)) stop("Invalid Metric");
   if(metr == -1) stop("Ambiguous Metric");
-  switch(meth,if(metr==1) nMDS(profiles) else nMDS(profiles,metric="euclidean"),prcomp(profiles),if(metr==1) hclust(as.dist(1-cor(t(profiles),use="pairwise.complete.obs")),method="average") else hclust(dist(profiles),method="average"),if(metr==1) hclust(as.dist(1-cor(t(profiles),use="pairwise.complete.obs")),method="complete") else hclust(dist(profiles),method="complete"))
+  switch(meth,if(metr==1) nMDS(profiles,random.seed=random.seed) else nMDS(profiles,metric="euclidean",random.seed=random.seed),prcomp(profiles),if(metr==1) hclust(as.dist(1-cor(t(profiles),use="pairwise.complete.obs")),method="average") else hclust(dist(profiles),method="average"),if(metr==1) hclust(as.dist(1-cor(t(profiles),use="pairwise.complete.obs")),method="complete") else hclust(dist(profiles),method="complete"))
 }
 
 find.order<-function(reduction.result)
@@ -20,7 +20,7 @@ find.order<-function(reduction.result)
         switch(meth,order(RadialCoords(reduction.result$x)[,2]),order(RadialCoords(reduction.result$x[,1:2])[,2]),reduction.result$order);
 }
 
-make.heatmap1<-function(profiles,row.method="nMDS",column.method="none",row.metric="pearson",column.metric="pearson",row.cluster.method="average",column.cluster.method="average",column.labels=NULL,row.labels=NULL,row.label.size=3,column.label.size=3,row.normalize=F)
+make.heatmap1<-function(profiles,row.method="nMDS",column.method="none",row.metric="pearson",column.metric="pearson",row.cluster.method="average",column.cluster.method="average",column.labels=NULL,row.labels=NULL,row.label.size=3,column.label.size=3,row.normalize=F, row.random.seed=NULL,column.random.seed=NULL)
 {
   
   if(data.class(profiles)!="matrix")
@@ -31,12 +31,14 @@ make.heatmap1<-function(profiles,row.method="nMDS",column.method="none",row.metr
   rmeth<-pmatch(row.method,METHODS);
   if(is.na(rmeth)) stop("Invalid Row Method");
   if(rmeth == -1) stop("Ambiguous Row Method");  
-  if(rmeth ==1) row.order<-1:dim(profiles)[1] else row.order<-find.order(data.reduction(profiles,method=row.method,metric=row.metric));
+  if(rmeth ==1) row.order<-1:dim(profiles)[1] else
+  row.order<-find.order(data.reduction(profiles,method=row.method,metric=row.metric,random.seed=row.random.seed));
 
   cmeth<-pmatch(column.method,METHODS);
   if(is.na(cmeth)) stop("Invalid Column Method");
   if(cmeth == -1) stop("Ambiguous Column Method");  
-  if(cmeth ==1) column.order<-1:dim(profiles)[2] else column.order<-find.order(data.reduction(t(profiles),method=column.method,metric=column.metric));
+  if(cmeth ==1) column.order<-1:dim(profiles)[2] else
+  column.order<-find.order(data.reduction(t(profiles),method=column.method,metric=column.metric,random.seed=column.random.seed));
 
   CMETHODS=c("none","average.linkage","complete.linkage");
   r.clust<-pmatch(row.cluster.method,CMETHODS);

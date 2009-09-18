@@ -27,7 +27,7 @@ Relational patterns of gene expression via non-metric multidimensional scaling a
 \author{Satwik Rajaram and Yoshi Oono}
 
 \seealso{
-\code{\link[pkg=stats]{prcomp}}
+\code{\link{prcomp}}
 }
 \examples{
 #Two dimensional embedding

@@ -12,7 +12,7 @@ Rlabel = 32, label.size = 1.5, normalize.profiles = T)
 make.circularmap(profiles, method = "nMDS", column.method="none",
 cluster.method = "average.linkage", metric = "pearson", column.metric="pearson",
 Rin = 10, Rout = 30, thickness = 3, label.names = NULL, Rlabel = 32,
-label.size = 1.5, normalize.profiles = T)
+label.size = 1.5, normalize.profiles = T, row.random.seed=NULL,column.random.seed=NULL)
 
 }
 \arguments{
@@ -34,6 +34,8 @@ label.size = 1.5, normalize.profiles = T)
   \item{cluster.method}{clustering method used for superposed row cluster. Either "complete.linkage" or "average.linkage".}
   \item{metric}{the distance function used for row embedding. Can be either "pearson" or "euclidean".}
   \item{column.metric}{the distance function used for column embedding. Can be either "pearson" or "euclidean".}
+  \item{row.random.seed}{Random seed to be used if nMDS is used to construct row embedding}
+  \item{column.random.seed}{Random seed to be used in nMDS is used to generate column ordering}
 }
 \details{ These are function used to construct heatmap like plots arranged in an annular ring. The assumption is that the 2d embedding result for the rows of the given matrix is circular in shape (the user should confirm this is indeed the case). The angular positions of each point (i.e., row) in this embedding is the angular position of its profile in the circular map. \command{circularmap} is the base function that takes the expression matrix and the result of dimensional reduction (expressed as a 2d positions or a list of angles) and produces the annular heatmap. \command{make.circularmap} is a convenience wrapper function that takes the given matrix, performs dimensional reduction using either "nMDS" or "PCA", produces cluster analysis on the row, and passes these results to \command{circularmap} for plotting.
 
@@ -43,7 +45,7 @@ The cluster analysis makes use of the same distance measure (specified by \code{
 }
 \value{A \pkg{ggplot2} plot of class \code{ggplot}.}
 \author{Satwik Rajaram and Yoshi Oono}
-\seealso{\code{\link[pkg:graphics]{image}},\code{\link[pkg:stats]{heatmap}},\code{\link{heatmap1}}.}
+\seealso{\code{\link{image}},\code{\link{heatmap}},\code{\link{heatmap1}}.}
 \examples{
 make.circularmap(as.matrix(mtcars),metric="euclidean",cluster.method="complete.linkage",
 normalize.profiles=FALSE)

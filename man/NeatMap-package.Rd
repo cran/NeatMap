@@ -11,8 +11,8 @@ The \pkg{NeatMap} package is a set of functions to create heatmap like plots in 
 \tabular{ll}{
 Package: \tab NeatMap\cr
 Type: \tab Package\cr
-Version: \tab 0.1\cr
-Date: \tab 2009-05-12\cr
+Version: \tab 0.3.1\cr
+Date: \tab 2009-09-18\cr
 License: \tab GPL-3\cr
 LazyLoad: \tab yes\cr
 }
@@ -22,7 +22,7 @@ The most basic functions are \command{heatmap1} and its convenience wrapper func
 
 The \command{lineplot} takes the 2 dimensional embedding result, places it in a grid. Then for each grid cell, the profiles of all the points in that cell are displayed together as line plots. Lineplots are easier to comprehend than intensity patterns, so this format provides a good representation of the data. However, rows and columns are not treated on an equal footing, and comparison of genes is more difficult than the heatmap.
 
-A circle like embedding was required to produce the ordering used in \command{make.heatmap1} and \command{make.circularmap}. In the more general case, where the embedding is not circular one may use the 3d plot \command{profileplot3d} (or its convenience wrapper function \command{make.profileplot3d}. The 2d embedding of rows is placed in the xy plane. For each point (i.e. row) in the xy plane, its profile, heatmap style, is shown parallel to the z axis.  It is possible to rotate and zoom this plot to focus on interesting parts.
+A circle like embedding was required to produce the ordering used in \command{make.heatmap1} and \command{make.circularmap}. In the more general case, where the embedding is not circular one may use the 3d plot \command{profileplot3d} (or its convenience wrapper function \command{make.profileplot3d}. The 2d embedding of rows is placed in the xy plane. For each point (i.e. row) in the xy plane, its profile, heatmap style, is shown parallel to the z axis.  It is possible to rotate and zoom this plot to focus on interesting parts. Stereo versions of these plots may be created using \command{stereo.profileplot3d} (or its convenience wrapper function \command{stereo.profileplot3d}). The stereo plots too are dynamically rotatable, and give the impression of observing truly three dimensional structure. Stereo plots could be useful in showing a 3D structure in publications (since rotations will not be possible).
 
 There are also the dendrogram creating functions \command{draw.dendrogram} and its 3d version \command{draw.dendrogram3d} which are used internally by the functions described above. However, they may be called directly to compare the cluster analysis result to that of the dimensional reduction method.
 
@@ -34,7 +34,7 @@ Maintainer: Satwik Rajaram <srajaram@illinois.edu>
 }
 \keyword{ package }
 \seealso{
-\code{\link{heatmap1}}, \code{\link{circularmap}}, \code{\link{lineplot}}, \code{\link{profileplot3d}}, \code{\link{draw.dendrogram}}, \code{\link{draw.dendrogram3d}}.
+\code{\link{heatmap1}}, \code{\link{circularmap}}, \code{\link{lineplot}}, \code{\link{profileplot3d}},\code{\link{stereo.profileplot3d}}, \code{\link{draw.dendrogram}}, \code{\link{draw.dendrogram3d}}.
 }
 \examples{
 
@@ -50,9 +50,9 @@ normalize.profiles=FALSE,label.names=rownames(mtcars),label.size=3)
 mtcars.PCA<-prcomp(mtcars);
 lineplot(mtcars.PCA$x,mtcars);
 
-#profileplot3d using PCA
-make.profileplot3d(mtcars,row.method="PCA",column.method="average.linkage",
-labels=rownames(mtcars))
+#profileplot3d  and stereo.profileplot3d using PCA
+make.profileplot3d(mtcars,row.method="PCA",column.method="average.linkage")
+make.stereo.profileplot3d(mtcars,row.method="PCA",column.method="average.linkage")
 
 #dendrogram3d to compare nMDS result to clustering
 mtcars.nMDS<-nMDS(mtcars,metric="euclidean")

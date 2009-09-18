@@ -12,7 +12,7 @@ column.label.size = 3, row.label.size = 3,row.normalize=F)
 make.heatmap1(profiles, row.method = "nMDS", column.method = "none",
 row.metric = "pearson", column.metric = "pearson", row.cluster.method = "average",
 column.cluster.method = "average", column.labels = NULL, row.labels = NULL,
-row.label.size = 3, column.label.size = 3,row.normalize=F)
+row.label.size = 3, column.label.size = 3,row.normalize=F, row.random.seed=NULL,column.random.seed=NULL)
 }
 \arguments{
   \item{profiles}{matrix: containing the data to be plotted.}
@@ -31,6 +31,8 @@ row.label.size = 3, column.label.size = 3,row.normalize=F)
   \item{column.metric}{Distance metric used by \code{column.method} either "pearson" or "euclidean"}
   \item{row.cluster.method}{Clustering algorithm used for clustering rows. Either "average.linkage" or "complete.linkage". If NULL, no row cluster results are shown}
   \item{column.cluster.method}{Clustering algorithm used for clustering columns. Either "average.linkage" or "complete.linkage". If NULL, no column cluster results are shown}
+  \item{row.random.seed}{Random seed to be used if nMDS is used to construct row ordering}
+  \item{column.random.seed}{Random seed to be used in nMDS is used to generate column ordering}
 }
 \details{The traditional heatmap uses clustering to order rows and columns. These functions allow us to use alternate schemes for this ordering. They use the same format as the traditional heatmap, and are therefore similar to \command{image} and \command{heatmap}. \command{heatmap1} assumes the user has already ordered the rows and columns according to the scheme of their choice. \command{make.heatmap1} is a convenience wrapper which performs ordering using "nMDS", "PCA", or hierarchical clustering. This ordering is the passed on to \code{heatmap1} for plotting.
 If "nMDS" or "PCA" are chosen as the ordering method, then it is assumed that their 2D embedding is annular in shape. This is often observed if \acronym{PCA} or nMDS (with euclidean distance) is applied to normalized data or Pearson correlation is used with nMDS. Angles measured at the centre of mass are then used for ordering. The user is therefore advised to confirm that such an annular structure is indeed present. Note that the two opposite ends of the ordering are typically separated by 360 degrees and are therefore very similar. To avoid artifacts produced by this, the user could consider using \command{circularmap} instead.
@@ -40,7 +42,7 @@ A \pkg{ggplot2} plot of class \code{ggplot}.
 }
 \author{Satwik Rajaram and Yoshi Oono}
 \seealso{
-\code{\link[graphics]{image}},\code{\link[stats]{heatmap}},\code{\link{circularmap}}.
+\code{\link[graphics]{image}},\code{\link{heatmap}},\code{\link{circularmap}}.
 }
 \examples{
 make.heatmap1(mtcars,row.method="PCA",column.method="average.linkage")

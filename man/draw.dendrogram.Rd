@@ -27,7 +27,7 @@ The leaf heights are scaled so that the maximum height corresponds to \code{scal
 }
 
 \seealso{
-\code{\link[pkg:stats]{hclust}}.
+\code{\link{hclust}}.
 }
 \examples{
 #compare complete and average linkage

@@ -15,21 +15,21 @@ RadialCoords<-function(pos)
   radial
 }
 
-make.profileplot3d<-function(profiles,row.method="nMDS", normalize.rows=T, column.method="average.linkage",row.metric="pearson",column.metric="pearson",row.cluster.method="average",column.cluster.method="average", point.size=3,col=NULL,color_scaling_function=NULL, labels=NULL, label.colors=NULL,label.size=0.5)
+make.profileplot3d<-function(profiles,row.method="nMDS", normalize.rows=T, column.method="average.linkage",row.metric="pearson",column.metric="pearson",row.cluster.method="average",column.cluster.method="average", point.size=3,col=NULL,color_scaling_function=NULL, labels=NULL, label.colors=NULL,label.size=0.5, row.random.seed=NULL,column.random.seed=NULL)
 {
   profiles<-as.matrix(profiles);
   ROW.METHODS=c("nMDS","PCA");
   meth<-pmatch(row.method,ROW.METHODS);
   if(is.na(meth)) stop("Invalid Row Method");
   if(meth == -1) stop("Ambiguous Row Method");
-  positions<-data.reduction(profiles,row.method,row.metric)$x[,1:2];
+  positions<-data.reduction(profiles,row.method,row.metric,row.random.seed)$x[,1:2];
 
   
   COLUMN.METHODS=c("none","nMDS","PCA","average.linkage","complete.linkage");
   cmeth<-pmatch(column.method,COLUMN.METHODS);
   if(is.na(cmeth)) stop("Invalid Column Method");
   if(cmeth == -1) stop("Ambiguous Column Method");  
-  if(cmeth ==1) column.order<-1:dim(profiles)[2] else column.order<-find.order(data.reduction(t(profiles),method=column.method,metric=column.metric));
+  if(cmeth ==1) column.order<-1:dim(profiles)[2] else column.order<-find.order(data.reduction(t(profiles),method=column.method,metric=column.metric,random.seed=column.random.seed));
  
 
   CMETHODS=c("none","average.linkage","complete.linkage");
@@ -43,9 +43,44 @@ make.profileplot3d<-function(profiles,row.method="nMDS", normalize.rows=T, colum
   if(c.clust == -1) stop("Ambiguous Column Cluster Method");
   if(c.clust==1) column.cluster=NULL else column.cluster<-data.reduction(t(profiles), method=column.cluster.method,metric=column.metric);
 
-  profileplot3d(positions,profiles,column.order=column.order,normalize.rows=normalize.rows,row.cluster=row.cluster,column.cluster=column.cluster,point.size=point.size,labels=labels,label.colors=label.colors,label.size=0.5,col=col,color_scaling_function=color_scaling_function)
+  profileplot3d(positions,profiles,column.order=column.order,normalize.rows=normalize.rows,row.cluster=row.cluster,column.cluster=column.cluster,point.size=point.size,labels=labels,label.colors=label.colors,label.size=label.size,col=col,color_scaling_function=color_scaling_function)
 }
 
+
+DynamicLabels<-function(button=3, id0, positions,labels,colors=NULL)
+{
+        start<-list();
+        starty<<-0.5;
+        id<<-id0;
+
+        begin<-function(x,y)
+        {
+                start$viewport<<-par3d("viewport");
+                width<<-start$viewport[3];
+                height<<-start$viewport[4];
+                starty<<-y;
+        }
+        update <- function(x,y) 
+        {
+                lambda<<-0.5*(starty-y)/height;
+                mysize <- clamp(par3d("cex")+lambda, 0.1, 10)
+                rgl.pop(id=id)
+                par3d("cex"=mysize)
+                if(is.null(colors))
+                {
+                        id<<-text3d(positions,text=labels,cex=mysize,adj=0)
+                }
+                else
+                {
+                        id<<-text3d(positions,text=labels,cex=mysize,color=colors,adj=0)
+                }
+        }
+        rgl.setMouseCallbacks(button, begin, update=update,end=NULL)
+}
+
+
+vlen <- function(a) sqrt(sum(a^2))
+clamp <- function(x, min, max)  min(max(x, min), max)
 profileplot3d<-function(pos,profiles,normalize.rows=T,column.order=NULL,row.cluster=NULL,column.cluster=NULL,labels=NULL,col=NULL,color_scaling_function=NULL,point.size=3,label.colors=NULL,label.size=0.5)
 {
     
@@ -173,17 +208,19 @@ profileplot3d<-function(pos,profiles,normalize.rows=T,column.order=NULL,row.clus
       {
 	textpos[i,1]<-pos[i,1];
 	textpos[i,2]<-pos[i,2];
-	textpos[i,3]<-1*scale;
+	textpos[i,3]<-1.05*scale;
       }
       if(is.null(label.colors))
       {
-	text3d(textpos,text=labels,cex=label.size);
+	id=text3d(textpos,text=labels,cex=label.size,adj=0);
+        DynamicLabels(id0=id,positions=textpos,labels=labels);
       }
       else
       {
         label.colors<-as.vector(label.colors);
         if(length(label.colors)!=n.points) stop("label.colors has incorrect dimensions");
-	text3d(textpos,text=labels,color=label.colors,cex=label.size);
+	id=text3d(textpos,text=labels,color=label.colors,cex=label.size,adj=0);
+        DynamicLabels(id0=id,positions=textpos,labels=labels,colors=label.colors);
       }
     }
     
