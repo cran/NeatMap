@@ -103,7 +103,7 @@ heatmap1<-function(profiles,row.order=NULL,column.order=NULL,row.cluster=NULL,co
         }
  }
 
-  myplot<-ggplot.default()
+  myplot<-ggplot(data.frame(expand.grid(y=row.ranks,x=column.ranks),values=as.vector(profiles1)));
   if(!is.null(row.cluster))
   {
     if(class(row.cluster)!="hclust") stop("row.cluster must be of class hclust");
@@ -127,7 +127,8 @@ heatmap1<-function(profiles,row.order=NULL,column.order=NULL,row.cluster=NULL,co
         myplot<-myplot+draw.labels(rownames(profiles),row.order,origin=c(profile.length+1,0),size=row.label.size)  ;
  }
 #fill.data=data.frame(expand.grid(row.ranks,column.ranks),values=as.vector(profiles1));
- myplot+geom_tile(data=data.frame(expand.grid(row.ranks,column.ranks),values=as.vector(profiles1)),aes(x=Var2,y=Var1,fill=values))+scale_fill_gradient2(low="green",high="red",mid="black",midpoint=mean(profiles1,na.rm=T))
+ #myplot+geom_tile(data=data.frame(expand.grid(y=row.ranks,x=column.ranks),values=as.vector(profiles1)),aes(x=x,y=y,fill=values))+scale_fill_gradient2(low="green",high="red",mid="black",midpoint=mean(profiles1,na.rm=T))
+ myplot+geom_tile(aes(x=x,y=y,fill=values))+scale_fill_gradient2(low="green",high="red",mid="black",midpoint=mean(profiles1,na.rm=T));
 }
 
 

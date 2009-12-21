@@ -58,7 +58,7 @@ cluster.result=mtcars.cluster)
 
 #To change coloring scheme etc
 make.circularmap(as.matrix(mtcars),metric="euclidean",cluster.method="complete.linkage",
-normalize.profiles=FALSE)+scale_fill_gradient2(low="yellow",high="blue",
+normalize.profiles=FALSE)+scale_colour_gradient2(low="yellow",high="blue",
 mid="black",midpoint=200);
 }
 \keyword{hplot}
