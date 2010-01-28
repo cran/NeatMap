@@ -154,9 +154,14 @@ draw.labels<-function(labels,label.order=NULL,order.dir="up",label.colors=NULL,o
         }
         label.dir<-primary.direction(order.dir);
         label.pos<-matrix(nrow=n.points,ncol=2);
+        label.reorder=label.order;
+	for( i in 1:n.points)
+	{
+	  label.reorder[label.order[i]]=i;
+	}
         for(i in 1:n.points)
         {
-                label.pos[i,]<-origin+label.dir*label.order[i];        
+                label.pos[i,]<-origin+label.dir*label.reorder[i];        
         }
         label.data<-data.frame(x=label.pos[,1],y=label.pos[,2],names=labels);
         geom_text(data=label.data,aes(x=x,y=y,label=names),hjust=0,angle=angle,size=size);
