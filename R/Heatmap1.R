@@ -118,13 +118,13 @@ heatmap1<-function(profiles,row.order=NULL,column.order=NULL,row.cluster=NULL,co
  {
         column.labels<-as.vector(column.labels);
         if(length(column.labels)!=profile.length) stop("column.labels must have number_of_columns elements");
-        myplot<-myplot+draw.labels(colnames(profiles),column.order,origin=c(0,0),order.dir="right",angle=270,size=column.label.size);
+        myplot<-myplot+draw.labels(column.labels,column.order,origin=c(0,0),order.dir="right",angle=270,size=column.label.size);
  }
  if(!is.null(row.labels))
  {
         row.labels<-as.vector(row.labels);
         if(length(row.labels)!=n.points) stop("row.labels must have number_of_rows elements");
-        myplot<-myplot+draw.labels(rownames(profiles),row.order,origin=c(profile.length+1,0),size=row.label.size)  ;
+        myplot<-myplot+draw.labels(row.labels,row.order,origin=c(profile.length+1,0),size=row.label.size)  ;
  }
 #fill.data=data.frame(expand.grid(row.ranks,column.ranks),values=as.vector(profiles1));
  #myplot+geom_tile(data=data.frame(expand.grid(y=row.ranks,x=column.ranks),values=as.vector(profiles1)),aes(x=x,y=y,fill=values))+scale_fill_gradient2(low="green",high="red",mid="black",midpoint=mean(profiles1,na.rm=T))

@@ -5,6 +5,7 @@
 #include<map>
 #include<cmath>
 #include<string>
+#include<R.h>
 
 using namespace std;
 //String Tokenizer
@@ -40,7 +41,7 @@ double Pearson(vector <double> data1,vector <double> data2)
         vector <double>::iterator itr2;
 	for(itr1=data1.begin(),itr2=data2.begin();(itr1!=data1.end())&&(itr2!=data2.end());++itr1,++itr2)
 	{
-		if(isnan(*itr1)||isnan(*itr2))
+		if(ISNAN(*itr1)||ISNAN(*itr2))
 		{
 			N--;
 		}
@@ -49,7 +50,7 @@ double Pearson(vector <double> data1,vector <double> data2)
 	for(itr1=data1.begin(),itr2=data2.begin();(itr1!=data1.end())&&(itr2!=data2.end());++itr1,++itr2)
     	{
 		
-		if(!(isnan(*itr1)||isnan(*itr2)))
+		if(!(ISNAN(*itr1)||ISNAN(*itr2)))
 		{
 			xy+=(*itr1)*(*itr2);
 			x+=(*itr1);
@@ -71,7 +72,7 @@ double Euclidean(vector <double> data1,vector <double> data2)
 
 	for(itr1=data1.begin(),itr2=data2.begin();(itr1!=data1.end())&&(itr2!=data2.end());++itr1,++itr2)
     	{
-                        if((!isnan(*itr1))&&(!isnan(*itr2)))
+                        if((!ISNAN(*itr1))&&(!ISNAN(*itr2)))
                         {
 			        dist+=((*itr1)-(*itr2))*((*itr1)-(*itr2));
                                 valid++;
