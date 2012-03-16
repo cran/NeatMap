@@ -103,6 +103,6 @@ lineplot<-function(pos,profiles,n.div.x=10,n.div.y=10,normalize=F,ylim=NULL,clip
         group[((i-1)*(length.profile)+1):(i*length.profile),1]<-i;
     }
     linedata<-data.frame(x=x,y=y,group=group);
-    myplot<-ggplot.default();
+    myplot<-ggplot();
     myplot+geom_path(aes(group=group,x=x,y=y),data=linedata,size=0.1)+scale_x_continuous(breaks=div.x,labels=round(div.x,3))+scale_y_continuous(breaks=div.y,labels=round(div.x,3))+opts(panel.grid.minor=theme_blank());
 }

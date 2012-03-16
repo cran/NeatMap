@@ -121,7 +121,7 @@ circularmap<-function(pos,profiles,column.order=NULL,cluster.result=NULL,cluster
         color<-c(color,color0);
         group<-c(group,group0);
         data<-data.frame(x=x0,y=y0,color=color0,group=group0,row.names=1:length(group0))
-        myplot<-myplot+geom_path(data=data,aes(x=x,y=y,color=color,group=group),size=thickness)+scale_colour_gradient2(low="green",high="red",mid="black",midpoint=mean(profiles1,na.rm=T),alpha=0.7);
+        myplot<-myplot+geom_path(data=data,aes(x=x,y=y,color=color,group=group),size=thickness)+scale_colour_gradient2(low="green",high="red",mid="black",midpoint=mean(profiles1,na.rm=T));
     }
     
     origin<-data.frame(x=0,y=0);
