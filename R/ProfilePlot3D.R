@@ -68,11 +68,11 @@ DynamicLabels<-function(button=3, id0, positions,labels,colors=NULL)
                 par3d("cex"=mysize)
                 if(is.null(colors))
                 {
-                        id<<-text3d(positions,text=labels,cex=mysize,adj=0)
+                        id<<-text3d(positions,texts=labels,cex=mysize,adj=0)
                 }
                 else
                 {
-                        id<<-text3d(positions,text=labels,cex=mysize,color=colors,adj=0)
+                        id<<-text3d(positions,texts=labels,cex=mysize,color=colors,adj=0)
                 }
         }
         rgl.setMouseCallbacks(button, begin, update=update,end=NULL)
@@ -212,14 +212,14 @@ profileplot3d<-function(pos,profiles,normalize.rows=T,column.order=NULL,row.clus
       }
       if(is.null(label.colors))
       {
-	id=text3d(textpos,text=labels,cex=label.size,adj=0);
+	id=text3d(textpos,texts=labels,cex=label.size,adj=0);
         DynamicLabels(id0=id,positions=textpos,labels=labels);
       }
       else
       {
         label.colors<-as.vector(label.colors);
         if(length(label.colors)!=n.points) stop("label.colors has incorrect dimensions");
-	id=text3d(textpos,text=labels,color=label.colors,cex=label.size,adj=0);
+	id=text3d(textpos,texts=labels,color=label.colors,cex=label.size,adj=0);
         DynamicLabels(id0=id,positions=textpos,labels=labels,colors=label.colors);
       }
     }

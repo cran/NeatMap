@@ -80,13 +80,13 @@ draw.dendrogram3d<-function(cluster,positions,direction=c(0,0,-1),scale=NULL,hei
        if(length(labels)!=n.points) stop("incorrect number of labels");
       if(is.null(label.colors))
       {
-	text3d(positions,text=labels,cex=label.size);
+	text3d(positions,texts=labels,cex=label.size);
       }
       else
       {
         labels.colors<-as.vector(labels.colors);
          if(length(label.colors)!=n.points) stop("incorrect number of label.colors");
-	text3d(positions,text=labels,color=label.colors,cex=label.size);
+	text3d(positions,texts=labels,color=label.colors,cex=label.size);
       }
     }
     segments3d(dendro.points,color='black');  
