@@ -1,4 +1,5 @@
 useDynLib("NeatMap")
-
+import(rgl)
+import(ggplot2)
 export(circularmap,draw.dendrogram,draw.dendrogram3d,heatmap1,lineplot,make.circularmap,make.heatmap1,make.profileplot3d,nMDS,profileplot3d,stereo.profileplot3d,make.stereo.profileplot3d)
 #exportPattern("^[[:alpha:]]+")

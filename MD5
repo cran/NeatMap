@@ -1,5 +1,5 @@
-0098b643a72c0db6324d11d93f794119 *DESCRIPTION
-61ac4b8a0965d79b8b874b8113be745e *NAMESPACE
+a5f09ba75be779779a98c8f9e8c0cd39 *DESCRIPTION
+4b4a387b5931c737db718aa6f167323e *NAMESPACE
 b59af3e1a5c5aa111e8823d2eba00c66 *R/CircularPlot.R
 7a3efd02d7250d8f8281ed0fe267a5d8 *R/Dendrogram3D.R
 08ddb64eb870e5c0eb613ecb29df90a1 *R/Heatmap1.R
@@ -11,7 +11,7 @@ c50e760304718d1c7f2aff5a08dd39b1 *man/NeatMap-package.Rd
 73a75aca6d019b3780c72067aff0f4bd *man/circularmap.Rd
 05d0150805de9240f661ee344c32208b *man/draw.dendrogram.Rd
 f36cc2dff6588faf5449bbcaa6016529 *man/draw.dendrogram3d.Rd
-edf70130a2ff190eb3f193a19aec088e *man/heatmap1.Rd
+4c160b5797abfc3841bfc5ed6da11516 *man/heatmap1.Rd
 cff0f7602622e9ab8831c039a557304e *man/lineplot.Rd
 3b65e42680d474fa6bca2b4906d2494a *man/nMDS.Rd
 40dc5d2467d2462cacb4b03fd8bea9ca *man/profileplot3d.Rd

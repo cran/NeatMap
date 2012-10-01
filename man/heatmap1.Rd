@@ -12,7 +12,8 @@ column.label.size = 3, row.label.size = 3,row.normalize=F)
 make.heatmap1(profiles, row.method = "nMDS", column.method = "none",
 row.metric = "pearson", column.metric = "pearson", row.cluster.method = "average",
 column.cluster.method = "average", column.labels = NULL, row.labels = NULL,
-row.label.size = 3, column.label.size = 3,row.normalize=F, row.random.seed=NULL,column.random.seed=NULL)
+row.label.size = 3, column.label.size = 3,row.normalize=F,
+row.random.seed=NULL,column.random.seed=NULL)
 }
 \arguments{
   \item{profiles}{matrix: containing the data to be plotted.}
