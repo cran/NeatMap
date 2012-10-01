@@ -104,5 +104,5 @@ lineplot<-function(pos,profiles,n.div.x=10,n.div.y=10,normalize=F,ylim=NULL,clip
     }
     linedata<-data.frame(x=x,y=y,group=group);
     myplot<-ggplot();
-    myplot+geom_path(aes(group=group,x=x,y=y),data=linedata,size=0.1)+scale_x_continuous(breaks=div.x,labels=round(div.x,3))+scale_y_continuous(breaks=div.y,labels=round(div.x,3))+theme(panel.grid.minor=element_blank());
+    myplot+geom_path(aes_string(group="group",x="x",y="y"),data=linedata,size=0.1)+scale_x_continuous(breaks=div.x,labels=round(div.x,3))+scale_y_continuous(breaks=div.y,labels=round(div.x,3))+theme(panel.grid.minor=element_blank());
 }

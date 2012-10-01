@@ -127,8 +127,8 @@ heatmap1<-function(profiles,row.order=NULL,column.order=NULL,row.cluster=NULL,co
         myplot<-myplot+draw.labels(row.labels,row.order,origin=c(profile.length+1,0),size=row.label.size)  ;
  }
 #fill.data=data.frame(expand.grid(row.ranks,column.ranks),values=as.vector(profiles1));
- #myplot+geom_tile(data=data.frame(expand.grid(y=row.ranks,x=column.ranks),values=as.vector(profiles1)),aes(x=x,y=y,fill=values))+scale_fill_gradient2(low="green",high="red",mid="black",midpoint=mean(profiles1,na.rm=T))
- myplot+geom_tile(aes(x=x,y=y,fill=values))+scale_fill_gradient2(low="green",high="red",mid="black",midpoint=mean(profiles1,na.rm=T));
+ #myplot+geom_tile(data=data.frame(expand.grid(y=row.ranks,x=column.ranks),values=as.vector(profiles1)),aes_string(x=x,y=y,fill=values))+scale_fill_gradient2(low="green",high="red",mid="black",midpoint=mean(profiles1,na.rm=T))
+ myplot+geom_tile(aes_string(x="x",y="y",fill="values"))+scale_fill_gradient2(low="green",high="red",mid="black",midpoint=mean(profiles1,na.rm=T));
 }
 
 
@@ -164,7 +164,7 @@ draw.labels<-function(labels,label.order=NULL,order.dir="up",label.colors=NULL,o
                 label.pos[i,]<-origin+label.dir*label.reorder[i];        
         }
         label.data<-data.frame(x=label.pos[,1],y=label.pos[,2],names=labels);
-        geom_text(data=label.data,aes(x=x,y=y,label=names),hjust=0,angle=angle,size=size);
+        geom_text(data=label.data,aes_string(x="x",y="y",label="names"),hjust=0,angle=angle,size=size);
 }
 
 draw.dendrogram<-function(cluster,leaf.order=NULL,scale=10,dendro.dir="left",order.dir="up",origin=as.vector(c(0.5,0)),heights=NULL)
@@ -238,7 +238,7 @@ draw.dendrogram<-function(cluster,leaf.order=NULL,scale=10,dendro.dir="left",ord
     }
     dendrogram<-data.frame(x=dendro.points[,1],y=dendro.points[,2],group=dendro.group);
 
-    geom_path(data=dendrogram,aes(x=x,y=y,group=group),size=0.1)
+    geom_path(data=dendrogram,aes_string(x="x",y="y",group="group"),size=0.1)
 
 }
 

@@ -100,7 +100,7 @@ return(data[p1] < data[p2]);
 };
   
 
-
+namespace mylocal{
 void rank(double *distances,unsigned long int *ranks,unsigned long int size)
 {
   vector <unsigned long int> array(size);
@@ -113,6 +113,7 @@ void rank(double *distances,unsigned long int *ranks,unsigned long int size)
   {
     ranks[array[i]]=i;
   }
+}
 }
 
 class nMDS
@@ -208,7 +209,7 @@ void nMDS::InitData()
                 dist_orig[remap(number_of_points,i,j)]=(distance_measure==0)?(Pearson(data[i],data[j])):Euclidean(data[i],data[j]);            
           }
         }
-        rank(dist_orig,rank_orig,number_of_points*(number_of_points-1)/2);
+        mylocal::rank(dist_orig,rank_orig,number_of_points*(number_of_points-1)/2);
 }
 
 void nMDS::CalculateEmbeddedRanks()
@@ -220,7 +221,7 @@ void nMDS::CalculateEmbeddedRanks()
                 dist_embed[remap(number_of_points,i,j)]=Euclidean(Positions[i],Positions[j]);            
           }
         }
-        rank(dist_embed,rank_embed,number_of_points*(number_of_points-1)/2);
+        mylocal::rank(dist_embed,rank_embed,number_of_points*(number_of_points-1)/2);
 }
 void nMDS::NormalizePositions()
 {

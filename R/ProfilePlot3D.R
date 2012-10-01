@@ -50,29 +50,30 @@ make.profileplot3d<-function(profiles,row.method="nMDS", normalize.rows=T, colum
 DynamicLabels<-function(button=3, id0, positions,labels,colors=NULL)
 {
         start<-list();
-        starty<<-0.5;
-        id<<-id0;
+        starty<-0.5;
+        id<-id0;
+        height<-NULL;
 
         begin<-function(x,y)
         {
-                start$viewport<<-par3d("viewport");
-                width<<-start$viewport[3];
-                height<<-start$viewport[4];
-                starty<<-y;
+                start$viewport<-par3d("viewport");
+                width<-start$viewport[3];
+                height<-start$viewport[4];
+                starty<-y;
         }
         update <- function(x,y) 
         {
-                lambda<<-0.5*(starty-y)/height;
+                lambda<-0.5*(starty-y)/height;
                 mysize <- clamp(par3d("cex")+lambda, 0.1, 10)
                 rgl.pop(id=id)
                 par3d("cex"=mysize)
                 if(is.null(colors))
                 {
-                        id<<-text3d(positions,texts=labels,cex=mysize,adj=0)
+                        id<-text3d(positions,texts=labels,cex=mysize,adj=0)
                 }
                 else
                 {
-                        id<<-text3d(positions,texts=labels,cex=mysize,color=colors,adj=0)
+                        id<-text3d(positions,texts=labels,cex=mysize,color=colors,adj=0)
                 }
         }
         rgl.setMouseCallbacks(button, begin, update=update,end=NULL)
@@ -212,14 +213,14 @@ profileplot3d<-function(pos,profiles,normalize.rows=T,column.order=NULL,row.clus
       }
       if(is.null(label.colors))
       {
-	id=text3d(textpos,texts=labels,cex=label.size,adj=0);
+	id<-text3d(textpos,texts=labels,cex=label.size,adj=0);
         DynamicLabels(id0=id,positions=textpos,labels=labels);
       }
       else
       {
         label.colors<-as.vector(label.colors);
         if(length(label.colors)!=n.points) stop("label.colors has incorrect dimensions");
-	id=text3d(textpos,texts=labels,color=label.colors,cex=label.size,adj=0);
+	id<-text3d(textpos,texts=labels,color=label.colors,cex=label.size,adj=0);
         DynamicLabels(id0=id,positions=textpos,labels=labels,colors=label.colors);
       }
     }

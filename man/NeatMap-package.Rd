@@ -11,8 +11,8 @@ The \pkg{NeatMap} package is a set of functions to create heatmap like plots in 
 \tabular{ll}{
 Package: \tab NeatMap\cr
 Type: \tab Package\cr
-Version: \tab 0.3.4\cr
-Date: \tab 2010-03-29\cr
+Version: \tab 0.3.6.1\cr
+Date: \tab 2013-10-31\cr
 License: \tab GPL-3\cr
 LazyLoad: \tab yes\cr
 }

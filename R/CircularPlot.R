@@ -121,7 +121,7 @@ circularmap<-function(pos,profiles,column.order=NULL,cluster.result=NULL,cluster
         color<-c(color,color0);
         group<-c(group,group0);
         data<-data.frame(x=x0,y=y0,color=color0,group=group0,row.names=1:length(group0))
-        myplot<-myplot+geom_path(data=data,aes(x=x,y=y,color=color,group=group),size=thickness)+scale_colour_gradient2(low="green",high="red",mid="black",midpoint=mean(profiles1,na.rm=T));
+        myplot<-myplot+geom_path(data=data,aes_string(x="x",y="y",color="color",group="group"),size=thickness)+scale_colour_gradient2(low="green",high="red",mid="black",midpoint=mean(profiles1,na.rm=T));
     }
     
     origin<-data.frame(x=0,y=0);
@@ -132,7 +132,7 @@ circularmap<-function(pos,profiles,column.order=NULL,cluster.result=NULL,cluster
       label.names<-as.vector(label.names);
       if(length(label.names)!=n.points) stop("The number of labels is not equal to the number of rows");
       labels<-data.frame(x=labelx,y=labely,angle=labelangle,label=label.names);
-      myplot<-myplot+geom_text(data=labels,aes(x=x,y=y,angle=angle,label=label),size=label.size,hjust=0);
+      myplot<-myplot+geom_text(data=labels,aes_string(x="x",y="y",angle="angle",label="label"),size=label.size,hjust=0);
     }
     
     if(!is.null(cluster.result))
@@ -198,5 +198,5 @@ CircularDendrogram<-function(pos,cluster,Rout=10,Rin=0,heights=NULL)
     
   }
   dendrogram<-data.frame(x=dendro.points[,1],y=dendro.points[,2],group=dendro.group);
-  geom_path(data=dendrogram,aes(group=group,x=x,y=y),size=0.1)
+  geom_path(data=dendrogram,aes_string(group="group",x="x",y="y"),size=0.1)
 }
